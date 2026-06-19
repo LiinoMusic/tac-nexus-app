@@ -36,7 +36,7 @@
     "@capacitor/splash-screen": "^6.0.0",
     "@capacitor/status-bar": "^6.0.0",
 
-    "@capacitor-community/bluetooth-le": "^5.0.0",
+    "@capacitor-community/bluetooth-le": "^6.0.0",
     "@capgo/capacitor-updater": "^6.0.0",
 
     "zustand": "^4.5.0"
