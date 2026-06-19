@@ -14,8 +14,8 @@
     "cap:open:android": "npx cap open android",
     "cap:open:electron": "npx cap open electron",
     "build:ios": "npm run build && npx cap sync ios && npx cap open ios",
-    "build:android": "npm run build && npx cap sync android && npx cap open android",
-    "build:electron": "npm run build && npx cap sync electron && npx cap open electron",
+    "build:android": "npm run build && npx cap sync android && cd android && ./gradlew assembleRelease",
+    "build:electron": "npm run build && npx cap sync electron && cd electron && npm run electron:build",
     "android:apk": "npm run build && npx cap sync android && cd android && ./gradlew assembleRelease",
     "android:aab": "npm run build && npx cap sync android && cd android && ./gradlew bundleRelease",
     "electron:exe": "npm run build && npx cap sync electron && cd electron && npm run electron:build"
@@ -30,8 +30,8 @@
     "@capacitor/preferences": "^6.0.0",
     "@capacitor/splash-screen": "^6.0.0",
     "@capacitor/status-bar": "^6.0.0",
-    "@capacitor-community/bluetooth-le": "latest",
-    "@capgo/capacitor-updater": "latest",
+    "@capacitor-community/bluetooth-le": "^6.0.0",
+    "@capgo/capacitor-updater": "^6.0.0",
     "zustand": "^4.5.0"
   },
   "devDependencies": {
