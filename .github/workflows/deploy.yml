@@ -1,0 +1,70 @@
+name: Live Update & APK Release
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*' # Löst auch bei Versions-Tags aus (z.B. v1.0.1)
+
+jobs:
+  deploy-live-update:
+    name: 🚀 Live Update (OTA)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install & Build
+        run: |
+          npm install
+          npm run build
+      - name: Deploy to Capgo
+        run: npx @capgo/cli@latest bundle upload --token ${{ secrets.CAPGO_TOKEN }} --channel production
+
+  build-apk:
+    name: 📱 Android APK Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          
+      - name: Install Dependencies
+        run: npm install
+        
+      - name: Build Web App
+        run: npm run build
+        
+      - name: Sync Capacitor
+        run: npx cap sync android
+        
+      - name: Build Android APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+          
+      - name: Upload APK to Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: android/app/build/outputs/apk/debug/app-debug.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Artifact (für manuellen Download)
+        uses: actions/upload-artifact@v4
+        with:
+          name: tac-nexus-latest-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk

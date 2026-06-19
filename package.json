@@ -1,0 +1,59 @@
+{
+  "name": "tac-nexus-native",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TAC·NEXUS — Native TicTacToe App mit P2P-Multiplayer",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "cap:sync": "npx cap sync",
+    "cap:open:ios": "npx cap open ios",
+    "cap:open:android": "npx cap open android",
+    "cap:open:electron": "npx cap open electron",
+    "build:ios": "npm run build && npx cap sync ios && npx cap open ios",
+    "build:android": "npm run build && npx cap sync android && cd android && ./gradlew assembleRelease",
+    "build:electron": "npm run build && npx cap sync electron && cd electron && npm run electron:build",
+    "android:apk": "npm run build && npx cap sync android && cd android && ./gradlew assembleRelease",
+    "android:aab": "npm run build && npx cap sync android && cd android && ./gradlew bundleRelease",
+    "electron:exe": "npm run build && npx cap sync electron && cd electron && npm run electron:build"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/haptics": "^6.0.0",
+    "@capacitor/keyboard": "^6.0.0",
+    "@capacitor/preferences": "^6.0.0",
+    "@capacitor/splash-screen": "^6.0.0",
+    "@capacitor/status-bar": "^6.0.0",
+    "@capacitor-community/bluetooth-le": "^6.0.0",
+    "@capgo/capacitor-updater": "^6.0.0",
+    "zustand": "^4.5.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/ios": "^6.0.0",
+    "@capacitor/android": "^6.0.0",
+    "@capacitor-community/electron": "^5.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.0",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.4.0",
+    "vite": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

@@ -1,0 +1,43 @@
+<!--
+  Android Manifest Permissions für TAC·NEXUS
+  Einfügen in: android/app/src/main/AndroidManifest.xml
+  Innerhalb von <manifest> (außerhalb von <application>)
+-->
+
+<!-- Bluetooth LE (API 31+) -->
+<uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+    android:usesPermissionFlags="neverForLocation" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+<!-- Bluetooth LE (API < 31, Fallback) -->
+<uses-permission android:name="android.permission.BLUETOOTH"
+    android:maxSdkVersion="30" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+    android:maxSdkVersion="30" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+    android:maxSdkVersion="30" />
+
+<!-- Wi-Fi Direct -->
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+<uses-permission android:name="android.permission.INTERNET" />
+<!-- INTERNET wird nur für den lokalen TCP-Socket (Wi-Fi Direct) benötigt -->
+
+<!-- Vibration (Haptic Feedback) -->
+<uses-permission android:name="android.permission.VIBRATE" />
+
+<!-- Hardware-Feature-Deklarationen -->
+<uses-feature android:name="android.hardware.bluetooth_le" android:required="false" />
+<uses-feature android:name="android.hardware.wifi.direct" android:required="false" />
+
+<!--
+  Für 120Hz: In android/app/src/main/res/values/styles.xml:
+  <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
+
+  In MainActivity.java / MainActivity.kt:
+  window.attributes.preferredDisplayModeId = findBestRefreshRate()
+  // Oder via WindowManager.LayoutParams.preferredRefreshRate = 120f
+-->
