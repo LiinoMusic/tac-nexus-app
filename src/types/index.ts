@@ -92,10 +92,15 @@ export interface P2PMessage {
 }
 
 export interface P2PMultiplayerState {
-  connectionState: 'idle' | 'searching' | 'connecting' | 'connected' | 'error';
+  connectionState: 'idle' | 'searching' | 'connecting' | 'connected' | 'error' | 'scanning' | 'advertising' | 'disconnected' | 'syncing';
   connectedPeer: P2PPeer | null;
-  role: 'host' | 'guest' | null;
-  error: Error | null;
+  availablePeers: P2PPeer[];
+  role: 'host' | 'guest' | 'none' | null;
+  transport: 'ble' | 'wifi-direct' | 'none';
+  latency: number;
+  isMyTurn: boolean;
+  syncStatus: 'idle' | 'syncing' | 'synced' | 'error';
+  error?: Error | null;
 }
 
 // --- Haptic Feedback ---
