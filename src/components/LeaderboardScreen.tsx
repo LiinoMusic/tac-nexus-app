@@ -79,20 +79,20 @@ const styles = {
     background:
       state === 'connected'
         ? 'rgba(64,192,128,.12)'
-        : state === 'advertising' || state === 'scanning'
+        : state === 'advertising' || state === 'scanning' || state === 'syncing'
         ? 'rgba(108,99,255,.12)'
         : 'rgba(96,96,112,.1)',
     border: `1px solid ${
       state === 'connected'
         ? 'rgba(64,192,128,.3)'
-        : state === 'advertising' || state === 'scanning'
+        : state === 'advertising' || state === 'scanning' || state === 'syncing'
         ? 'rgba(108,99,255,.3)'
         : TOKEN.border
     }`,
     color:
       state === 'connected'
         ? TOKEN.green
-        : state === 'advertising' || state === 'scanning'
+        : state === 'advertising' || state === 'scanning' || state === 'syncing'
         ? TOKEN.accent2
         : TOKEN.text3,
   }),
@@ -315,7 +315,7 @@ const PodiumCard = memo(function PodiumCard({
 }) {
   const medals = { 1: '🥇', 2: '🥈', 3: '🥉' };
   return (
-    <div style={styles.podiumCard(rank, entry.isLocal)} onClick={onClick}>
+    <div style={styles.podiumCard(rank, entry.isLocal ?? false)} onClick={onClick}>
       <div style={styles.podiumMedal(rank)}>{medals[rank]}</div>
       <div style={styles.podiumName}>{entry.playerName}</div>
       <div style={styles.podiumScore(rank)}>{formatScore(entry.score)}</div>
@@ -337,7 +337,7 @@ const EntryRow = memo(function EntryRow({
   const grade = entry.score >= 50000 ? 'S' : entry.score >= 25000 ? 'A' : entry.score >= 10000 ? 'B' : 'C';
 
   return (
-    <div style={styles.entryRow(entry.isLocal, entry.isNew)} onClick={onClick}>
+    <div style={styles.entryRow(entry.isLocal ?? false, entry.isNew ?? false)} onClick={onClick}>
       <div style={styles.rankBadge(entry.rank)}>
         {entry.rank <= 3 ? rankEmojis[entry.rank] : `#${entry.rank}`}
       </div>

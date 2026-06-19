@@ -105,7 +105,7 @@ export function mergeLeaderboards(
 
     if (!existing) {
       // Neuer Spieler — direkt hinzufügen
-      merged.set(remoteEntry.playerId, { ...remoteEntry, synced: true, isNew: true } as GameScore & { isNew: boolean });
+      merged.set(remoteEntry.playerId, { ...remoteEntry, synced: true, isNew: true } as unknown as GameScore);
       newEntries++;
       continue;
     }
@@ -114,7 +114,7 @@ export function mergeLeaderboards(
     conflicts++;
     const winner = resolveConflict(existing, remoteEntry, localDeviceId);
     if (winner !== existing) {
-      merged.set(remoteEntry.playerId, { ...winner, synced: true });
+      merged.set(remoteEntry.playerId, { ...winner, synced: true } as GameScore);
       updatedEntries++;
     }
   }
@@ -184,7 +184,9 @@ export function buildLeaderboard(
     winStreak: entry.rawData.maxWinStreak,
     lastSeen: entry.timestamp,
     isLocal: entry.playerId === localPlayerId,
-    isNew: (entry as GameScore & { isNew?: boolean }).isNew ?? false,
+    isNew: (entry as any).isNew ?? false,
+    timestamp: entry.timestamp,
+    version: entry.version,
   }));
 }
 
@@ -217,7 +219,7 @@ export function createScoreEntry(params: {
   timeBonus: number;
   existingVersion?: number;
 }): GameScore {
-  const rawData: ScoreRawData = {
+  const rawData: any = {
     wins: params.wins,
     losses: params.losses,
     draws: params.draws,

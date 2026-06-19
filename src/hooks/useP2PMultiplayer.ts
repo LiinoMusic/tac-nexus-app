@@ -476,11 +476,11 @@ export function useP2PMultiplayer(
         payload: {
           cellIndex,
           player: role === 'host' ? 'X' : 'O',
-          skillUsed,
           moveNumber: moveCounterRef.current,
           boardHash: hashBoard(board),
+          skillUsed,
         },
-      });
+      } as P2PMessage<GameMovePayload>);
     },
     [connectedPeer, playerId, playerName, role],
   );

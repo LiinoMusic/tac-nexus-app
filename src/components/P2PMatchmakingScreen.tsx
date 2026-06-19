@@ -10,7 +10,16 @@
  */
 
 import React, { useEffect, useRef, memo } from 'react';
-import type { P2PPeer, P2PMultiplayerState, P2PMultiplayerActions } from '../types';
+import type { P2PPeer, P2PMultiplayerState } from '../types';
+
+export interface P2PMultiplayerActions {
+  startMatchmaking: () => Promise<void>;
+  stopMatchmaking: () => void;
+  connectToPeer: (peer: P2PPeer) => Promise<void>;
+  disconnect: () => void;
+  sendMove: (cellIndex: number, board: any[], skillUsed?: any) => Promise<void>;
+  syncLeaderboard: (localScores: any[]) => Promise<void>;
+}
 
 const TOKEN = {
   bg: '#0a0a0f', bg2: '#111118', bg3: '#1a1a24', bg4: '#22222e',
@@ -49,53 +58,51 @@ const RadarCanvas = memo(function RadarCanvas({
     const R = SIZE / 2 - 10;
 
     function draw() {
-      ctx.clearRect(0, 0, SIZE, SIZE);
+      ctx?.clearRect(0, 0, SIZE, SIZE);
 
       // Hintergrund-Kreise
       for (let r = R / 3; r <= R; r += R / 3) {
-        ctx.beginPath();
-        ctx.arc(cx, cy, r, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(108,99,255,.15)';
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        ctx?.beginPath();
+        ctx?.arc(cx, cy, r, 0, Math.PI * 2);
+        if(ctx) ctx.strokeStyle = 'rgba(108,99,255,.15)';
+        if(ctx) ctx.lineWidth = 1;
+        ctx?.stroke();
       }
 
       // Kreuz-Linien
-      ctx.strokeStyle = 'rgba(108,99,255,.1)';
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(cx, cy - R); ctx.lineTo(cx, cy + R); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(cx - R, cy); ctx.lineTo(cx + R, cy); ctx.stroke();
+      if(ctx) ctx.strokeStyle = 'rgba(108,99,255,.1)';
+      if(ctx) ctx.lineWidth = 1;
+      ctx?.beginPath(); ctx?.moveTo(cx, cy - R); ctx?.lineTo(cx, cy + R); ctx?.stroke();
+      ctx?.beginPath(); ctx?.moveTo(cx - R, cy); ctx?.lineTo(cx + R, cy); ctx?.stroke();
 
       if (isActive) {
         // Sweep-Linie
         const sweepAngle = angleRef.current;
-        const gradient = ctx.createConicalGradient
-          ? null // Nicht überall verfügbar
-          : null;
+        const gradient = null;
 
         // Sweep-Fächer (manuell)
         const SWEEP = Math.PI / 3;
         for (let i = 0; i < 20; i++) {
           const a = sweepAngle - (i / 20) * SWEEP;
           const alpha = (1 - i / 20) * 0.4;
-          ctx.beginPath();
-          ctx.moveTo(cx, cy);
-          ctx.arc(cx, cy, R, a, a + SWEEP / 20);
-          ctx.closePath();
-          ctx.fillStyle = `rgba(108,99,255,${alpha})`;
-          ctx.fill();
+          ctx?.beginPath();
+          ctx?.moveTo(cx, cy);
+          ctx?.arc(cx, cy, R, a, a + SWEEP / 20);
+          ctx?.closePath();
+          if(ctx) ctx.fillStyle = `rgba(108,99,255,${alpha})`;
+          ctx?.fill();
         }
 
         // Sweep-Linie (hell)
-        ctx.beginPath();
-        ctx.moveTo(cx, cy);
-        ctx.lineTo(
+        ctx?.beginPath();
+        ctx?.moveTo(cx, cy);
+        ctx?.lineTo(
           cx + Math.cos(sweepAngle) * R,
           cy + Math.sin(sweepAngle) * R,
         );
-        ctx.strokeStyle = 'rgba(139,133,255,.9)';
-        ctx.lineWidth = 2;
-        ctx.stroke();
+        if(ctx) ctx.strokeStyle = 'rgba(139,133,255,.9)';
+        if(ctx) ctx.lineWidth = 2;
+        ctx?.stroke();
 
         angleRef.current += 0.04;
       }
@@ -106,23 +113,23 @@ const RadarCanvas = memo(function RadarCanvas({
         const blipR = R * 0.5 + (i % 3) * (R * 0.15);
         const bx = cx + Math.cos(blipAngle) * blipR;
         const by = cy + Math.sin(blipAngle) * blipR;
-        ctx.beginPath();
-        ctx.arc(bx, by, 4, 0, Math.PI * 2);
-        ctx.fillStyle = TOKEN.green;
-        ctx.fill();
+        ctx?.beginPath();
+        ctx?.arc(bx, by, 4, 0, Math.PI * 2);
+        if(ctx) ctx.fillStyle = TOKEN.green;
+        ctx?.fill();
         // Ping-Effekt
-        ctx.beginPath();
-        ctx.arc(bx, by, 8, 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(64,192,128,.4)';
-        ctx.lineWidth = 1;
-        ctx.stroke();
+        ctx?.beginPath();
+        ctx?.arc(bx, by, 8, 0, Math.PI * 2);
+        if(ctx) ctx.strokeStyle = 'rgba(64,192,128,.4)';
+        if(ctx) ctx.lineWidth = 1;
+        ctx?.stroke();
       }
 
       // Zentrum
-      ctx.beginPath();
-      ctx.arc(cx, cy, 4, 0, Math.PI * 2);
-      ctx.fillStyle = TOKEN.accent2;
-      ctx.fill();
+      ctx?.beginPath();
+      ctx?.arc(cx, cy, 4, 0, Math.PI * 2);
+      if(ctx) ctx.fillStyle = TOKEN.accent2;
+      ctx?.fill();
 
       animRef.current = requestAnimationFrame(draw);
     }
