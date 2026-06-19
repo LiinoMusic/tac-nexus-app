@@ -16,14 +16,14 @@
     "noFallthroughCasesInSwitch": true,
     "exactOptionalPropertyTypes": false,
     "noUncheckedIndexedAccess": false,
-    "baseUrl": ".",
+
     "paths": {
-      "@/*": ["src/*"],
-      "@hooks/*": ["src/hooks/*"],
-      "@components/*": ["src/components/*"],
-      "@engine/*": ["src/engine/*"],
-      "@types/*": ["src/types/*"],
-      "@utils/*": ["src/utils/*"]
+      "@/*": ["./src/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@components/*": ["./src/components/*"],
+      "@engine/*": ["./src/engine/*"],
+      "@types/*": ["./src/types/*"],
+      "@utils/*": ["./src/utils/*"]
     },
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
