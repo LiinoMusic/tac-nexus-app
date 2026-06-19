@@ -92,10 +92,10 @@ export interface P2PMessage {
 }
 
 export interface P2PMultiplayerState {
-  connectionState: 'idle' | 'searching' | 'connecting' | 'connected' | 'error';
+  connectionState: 'idle' | 'searching' | 'connecting' | 'connected' | 'error' | 'scanning' | 'advertising';
   connectedPeer: P2PPeer | null;
   role: 'host' | 'guest' | null;
-  error: Error | null;
+  error?: Error | null;
 }
 
 // --- Haptic Feedback ---
